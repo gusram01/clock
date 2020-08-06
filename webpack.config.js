@@ -5,15 +5,13 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   mode: 'production',
-  entry: { home: './src/index.ts' },
+  entry: './src/index.ts',
   resolve: {
     extensions: [ '.tsx', '.ts', '.js' ],
   },
   output: {
     filename: '[name].[contentHash].js',
     path: path.resolve(__dirname, 'docs'),
-    publicPath: '/',
-
   },
   optimization: {
     namedModules: false,
