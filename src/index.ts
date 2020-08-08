@@ -1,29 +1,45 @@
 import './styles.css';
 
 const root = document.documentElement;
-const select = document.querySelector('select') as HTMLSelectElement;
-let init = 0;
+const cover = document.getElementById('cover') as HTMLDivElement;
+const time = new Date();
+const mins = time.getMinutes();
+const secs = time.getSeconds();
+const hrs = time.getHours();
+let init = (3600 * hrs) + (mins * 60) + secs + 1;
 
+const insertMarks = (parent: HTMLElement) => {
+  const fragment = new DocumentFragment();
 
-const selectValue = (ev: Event) => {
-  ev.preventDefault();
-  const selectElement = ev.target as HTMLSelectElement;
-  const time = new Date();
-  const mins = time.getUTCMinutes();
-  const secs = time.getUTCSeconds();
-  const hrsUTC = time.getUTCHours();
-  const valueSelect = selectElement.value;
-  const hrs = Number.parseInt(valueSelect);
-  return init = (3600 * (hrsUTC + hrs)) + (mins * 60) + secs + 1;
-};
+  for (let i = 0; i < 24; i++) {
+    const div = document.createElement('div');
+    div.setAttribute('class', 'mark');
+    div.innerHTML = `
+      <span class="mark_min">&mdash;</span>
+      <span class="mark_min">&mdash;</span>
+    `;
+    fragment.appendChild(div);
+  }
+  parent.appendChild(fragment.cloneNode(true));
+}
 
-select.addEventListener('click', selectValue);
+const styleMarks = (parent: HTMLElement, childsClass: string) => {
+  const array = parent.querySelectorAll(childsClass) as NodeListOf<HTMLDivElement>;
+  let deg = 1;
 
-const timer = () => {
+  array.forEach(element => {
+    (deg % 5 === 0) ? deg++ : deg;
+    element.style.transform = `rotateZ(${6 * deg++}deg)`;
+  })
+}
+
+insertMarks(cover);
+styleMarks(cover, '.mark');
+(function timer() {
   root.style.setProperty('--sec', `${init}`);
   root.style.setProperty('--min', `${init / 10}`);
   root.style.setProperty('--hr', `${init / 120}`);
   init++;
-};
+  setTimeout(timer, 1000);
+})();
 
-setInterval(timer, 1000);
