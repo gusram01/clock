@@ -1,6 +1,6 @@
 import './styles.css';
 
-const root = document.documentElement;
+const wrapper = document.querySelector('.wrapper') as HTMLDivElement;
 const cover = document.getElementById('cover') as HTMLDivElement;
 const time = new Date();
 const mins = time.getMinutes();
@@ -36,10 +36,10 @@ const styleMarks = (parent: HTMLElement, childsClass: string) => {
 insertMarks(cover);
 styleMarks(cover, '.mark');
 (function timer() {
-  root.style.setProperty('--sec', `${init}`);
-  root.style.setProperty('--min', `${init / 10}`);
-  root.style.setProperty('--hr', `${init / 120}`);
+  wrapper.style.setProperty('--sec', `${init}`);
+  wrapper.style.setProperty('--min', `${init / 10}`);
+  wrapper.style.setProperty('--hr', `${init / 120}`);
   init++;
-  setTimeout(timer, 1000);
+  window.setTimeout(timer, 1000);
 })();
 
